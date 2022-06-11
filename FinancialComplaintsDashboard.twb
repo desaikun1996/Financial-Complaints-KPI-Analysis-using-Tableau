@@ -4,6 +4,8 @@
 <workbook original-version='18.1' source-build='2022.1.2 (20221.22.0525.0851)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
   <document-format-change-manifest>
     <_.fcp.AnimationOnByDefault.true...AnimationOnByDefault />
+    <IntuitiveSorting />
+    <IntuitiveSorting_SP2 />
     <_.fcp.MarkAnimation.true...MarkAnimation />
     <_.fcp.ObjectModelEncapsulateLegacy.true...ObjectModelEncapsulateLegacy />
     <_.fcp.ObjectModelTableType.true...ObjectModelTableType />
@@ -345,12 +347,26 @@
       <column caption='Non Timely Response' datatype='real' name='[Calculation_1293096087033196546]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='1-[Calculation_1293096087032156161]' />
       </column>
+      <column caption='In Progress' datatype='integer' name='[Calculation_1293096087034707971]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='COUNT(If ([Company response to consumer])=&quot;In progress&quot; THEN [Complaint ID] end)' />
+      </column>
+      <column caption='In Progress %' datatype='real' name='[Calculation_1293096087035396100]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='COUNT(IF [Company response to consumer]=&quot;In progress&quot; THEN [Complaint ID] END)/COUNT([Complaint ID])' />
+      </column>
+      <column caption='Monetary Relief #' datatype='real' name='[Calculation_1293096087036616709]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='COUNT(IF [Company response to consumer]=&quot;Closed with monetary relief&quot; then [Complaint ID] END)/COUNT([Complaint ID])' />
+      </column>
       <column datatype='integer' name='[Complaint ID]' role='dimension' type='ordinal' />
+      <column caption='Non Monetary Relief # ' datatype='real' name='[Monetary Relief # (copy)_1293096087036932102]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='1- [Calculation_1293096087036616709]' />
+      </column>
       <column datatype='string' name='[State]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
       <column datatype='string' name='[ZIP code]' role='dimension' semantic-role='[ZipCode].[Name]' type='nominal' />
       <_.fcp.ObjectModelTableType.true...column caption='Financial Consumer Complaints.csv' datatype='table' name='[__tableau_internal_object_id__].[Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6]' role='measure' type='quantitative' />
       <column-instance column='[Calculation_1293096087032156161]' derivation='User' name='[usr:Calculation_1293096087032156161:qk]' pivot='key' type='quantitative' />
       <column-instance column='[Calculation_1293096087033196546]' derivation='User' name='[usr:Calculation_1293096087033196546:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[Calculation_1293096087036616709]' derivation='User' name='[usr:Calculation_1293096087036616709:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[Monetary Relief # (copy)_1293096087036932102]' derivation='User' name='[usr:Monetary Relief # (copy)_1293096087036932102:qk]' pivot='key' type='quantitative' />
       <layout _.fcp.SchemaViewerObjectModel.false...dim-percentage='0.5' _.fcp.SchemaViewerObjectModel.false...measure-percentage='0.4' dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
       <style>
         <style-rule element='mark'>
@@ -358,8 +374,14 @@
             <map to='#2baad8'>
               <bucket>&quot;[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087032156161:qk]&quot;</bucket>
             </map>
+            <map to='#2baad8'>
+              <bucket>&quot;[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Monetary Relief \# (copy)_1293096087036932102:qk]&quot;</bucket>
+            </map>
             <map to='#e1e1e1'>
               <bucket>&quot;[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087033196546:qk]&quot;</bucket>
+            </map>
+            <map to='#e1e1e1'>
+              <bucket>&quot;[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087036616709:qk]&quot;</bucket>
             </map>
           </encoding>
         </style-rule>
@@ -399,6 +421,199 @@
     </datasource>
   </datasources>
   <worksheets>
+    <worksheet name='Comp. By Product'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontalignment='1' fontcolor='#898989' fontname='Tableau Book' fontsize='11'>COMPLAINT </run>
+            <run bold='true' fontalignment='1' fontcolor='#000000' fontname='Tableau Book' fontsize='11'>BY PRODUCT</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Financial Consumer Complaints' name='federated.1k47omy0bfnlag1732g8b11gzneh' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1k47omy0bfnlag1732g8b11gzneh'>
+            <_.fcp.ObjectModelTableType.false...column caption='Financial Consumer Complaints.csv' datatype='integer' name='[__tableau_internal_object_id__].[Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6]' role='measure' type='quantitative' />
+            <column datatype='string' name='[Product]' role='dimension' type='nominal' />
+            <_.fcp.ObjectModelTableType.true...column caption='Financial Consumer Complaints.csv' datatype='table' name='[__tableau_internal_object_id__].[Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6]' role='measure' type='quantitative' />
+            <column-instance column='[__tableau_internal_object_id__].[Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6]' derivation='Count' name='[__tableau_internal_object_id__].[cnt:Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Product]' derivation='None' name='[none:Product:nk]' pivot='key' type='nominal' />
+          </datasource-dependencies>
+          <shelf-sorts>
+            <shelf-sort-v2 dimension-to-sort='[federated.1k47omy0bfnlag1732g8b11gzneh].[none:Product:nk]' direction='DESC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.1k47omy0bfnlag1732g8b11gzneh].[__tableau_internal_object_id__].[cnt:Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6:qk]' shelf='rows' />
+          </shelf-sorts>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <format attr='display' class='0' field='[federated.1k47omy0bfnlag1732g8b11gzneh].[__tableau_internal_object_id__].[cnt:Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6:qk]' scope='cols' value='false' />
+          </style-rule>
+          <style-rule element='label'>
+            <format attr='font-size' field='[federated.1k47omy0bfnlag1732g8b11gzneh].[none:Product:nk]' value='8' />
+            <format attr='color' field='[federated.1k47omy0bfnlag1732g8b11gzneh].[none:Product:nk]' value='#555555' />
+          </style-rule>
+          <style-rule element='worksheet'>
+            <format attr='display-field-labels' scope='rows' value='false' />
+          </style-rule>
+          <style-rule element='refline'>
+            <format attr='fill-above' id='refline0' value='#ffffff' />
+            <format attr='color' id='refline0' value='#898989' />
+            <format attr='fill-below' id='refline0' value='#00000000' />
+            <format attr='background-color' id='refline0' value='#ffffff58' />
+            <format attr='stroke-color' id='refline0' value='#66666613' />
+          </style-rule>
+          <style-rule element='gridline'>
+            <format attr='stroke-size' scope='cols' value='0' />
+            <format attr='line-visibility' scope='cols' value='off' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <mark-sizing mark-sizing-setting='marks-scaling-off' />
+            <encodings>
+              <text column='[federated.1k47omy0bfnlag1732g8b11gzneh].[__tableau_internal_object_id__].[cnt:Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6:qk]' />
+            </encodings>
+            <reference-line axis-column='[federated.1k47omy0bfnlag1732g8b11gzneh].[__tableau_internal_object_id__].[cnt:Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6:qk]' enable-instant-analytics='true' formula='average' id='refline0' label='AVERAGE - &lt;Value&gt;' label-type='custom' probability='95' scope='per-pane' value-column='[federated.1k47omy0bfnlag1732g8b11gzneh].[__tableau_internal_object_id__].[cnt:Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6:qk]' z-order='1' />
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+                <format attr='mark-color' value='#2485d4' />
+                <format attr='has-stroke' value='false' />
+                <format attr='size' value='1.3953038454055786' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.1k47omy0bfnlag1732g8b11gzneh].[none:Product:nk]</rows>
+        <cols>[federated.1k47omy0bfnlag1732g8b11gzneh].[__tableau_internal_object_id__].[cnt:Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6:qk]</cols>
+      </table>
+      <simple-id uuid='{6263D99A-87BF-4D64-86F3-A62B146374BE}' />
+    </worksheet>
+    <worksheet name='IN PROGRESS'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontalignment='1' fontcolor='#898989' fontname='Tableau Book' fontsize='11'>&lt;Sheet Name&gt;</run>
+            <run fontalignment='1'>Æ&#10;</run>
+            <run bold='true' fontalignment='1' fontcolor='#f28e2b' fontname='Tableau Medium' fontsize='24'><![CDATA[<[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087034707971:qk]>]]></run>
+            <run fontalignment='1'>Æ&#10;</run>
+            <run bold='true' fontalignment='1' fontcolor='#666666' fontname='Tableau Medium' fontsize='10'><![CDATA[(<[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087035396100:qk]>)]]></run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Financial Consumer Complaints' name='federated.1k47omy0bfnlag1732g8b11gzneh' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1k47omy0bfnlag1732g8b11gzneh'>
+            <column caption='In Progress' datatype='integer' name='[Calculation_1293096087034707971]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='COUNT(If ([Company response to consumer])=&quot;In progress&quot; THEN [Complaint ID] end)' />
+            </column>
+            <column caption='In Progress %' datatype='real' name='[Calculation_1293096087035396100]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='COUNT(IF [Company response to consumer]=&quot;In progress&quot; THEN [Complaint ID] END)/COUNT([Complaint ID])' />
+            </column>
+            <column datatype='string' name='[Company response to consumer]' role='dimension' type='nominal' />
+            <column datatype='integer' name='[Complaint ID]' role='dimension' type='ordinal' />
+            <column-instance column='[Calculation_1293096087034707971]' derivation='User' name='[usr:Calculation_1293096087034707971:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_1293096087035396100]' derivation='User' name='[usr:Calculation_1293096087035396100:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='cell'>
+            <format attr='text-format' field='[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087035396100:qk]' value='p0.00%' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <lod column='[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087034707971:qk]' />
+              <lod column='[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087035396100:qk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows />
+        <cols />
+      </table>
+      <simple-id uuid='{0C88C39A-A058-4219-ADA9-5991AA0CD6C6}' />
+    </worksheet>
+    <worksheet name='RESOLVED AT NO COST'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontalignment='1' fontcolor='#898989' fontname='Tableau Book' fontsize='11'>&lt;Sheet Name&gt;</run>
+            <run fontalignment='1'>Æ&#10;</run>
+            <run bold='true' fontalignment='1' fontcolor='#000000' fontname='Tableau Medium' fontsize='22'><![CDATA[<[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Monetary Relief # (copy)_1293096087036932102:qk]>]]></run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Financial Consumer Complaints' name='federated.1k47omy0bfnlag1732g8b11gzneh' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1k47omy0bfnlag1732g8b11gzneh'>
+            <column caption='Monetary Relief #' datatype='real' name='[Calculation_1293096087036616709]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='COUNT(IF [Company response to consumer]=&quot;Closed with monetary relief&quot; then [Complaint ID] END)/COUNT([Complaint ID])' />
+            </column>
+            <column datatype='string' name='[Company response to consumer]' role='dimension' type='nominal' />
+            <column datatype='integer' name='[Complaint ID]' role='dimension' type='ordinal' />
+            <column caption='Non Monetary Relief # ' datatype='real' name='[Monetary Relief # (copy)_1293096087036932102]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='1- [Calculation_1293096087036616709]' />
+            </column>
+            <column-instance column='[Calculation_1293096087036616709]' derivation='User' name='[usr:Calculation_1293096087036616709:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Monetary Relief # (copy)_1293096087036932102]' derivation='User' name='[usr:Monetary Relief # (copy)_1293096087036932102:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.1k47omy0bfnlag1732g8b11gzneh].[:Measure Names]'>
+            <groupfilter function='union' user:op='manual'>
+              <groupfilter function='member' level='[:Measure Names]' member='&quot;[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087036616709:qk]&quot;' />
+              <groupfilter function='member' level='[:Measure Names]' member='&quot;[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Monetary Relief \# (copy)_1293096087036932102:qk]&quot;' />
+            </groupfilter>
+          </filter>
+          <slices>
+            <column>[federated.1k47omy0bfnlag1732g8b11gzneh].[:Measure Names]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <format attr='display' class='0' field='[federated.1k47omy0bfnlag1732g8b11gzneh].[Multiple Values]' scope='cols' value='false' />
+          </style-rule>
+          <style-rule element='cell'>
+            <format attr='text-format' field='[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Monetary Relief # (copy)_1293096087036932102:qk]' value='p0.0%' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <encodings>
+              <color column='[federated.1k47omy0bfnlag1732g8b11gzneh].[:Measure Names]' />
+              <lod column='[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Monetary Relief # (copy)_1293096087036932102:qk]' />
+              <lod column='[federated.1k47omy0bfnlag1732g8b11gzneh].[:Measure Names]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows />
+        <cols>[federated.1k47omy0bfnlag1732g8b11gzneh].[Multiple Values]</cols>
+      </table>
+      <simple-id uuid='{8C16E67A-5D12-49B7-86BD-9C0FB0DB14B3}' />
+    </worksheet>
     <worksheet name='TIMELY RESPONSE'>
       <layout-options>
         <title>
@@ -439,6 +654,9 @@
           <aggregation value='true' />
         </view>
         <style>
+          <style-rule element='axis'>
+            <format attr='display' class='0' field='[federated.1k47omy0bfnlag1732g8b11gzneh].[Multiple Values]' scope='cols' value='false' />
+          </style-rule>
           <style-rule element='cell'>
             <format attr='text-format' field='[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087032156161:qk]' value='p0.0%' />
           </style-rule>
@@ -562,7 +780,7 @@
       </viewpoint>
       <simple-id uuid='{36D7B545-CE79-4C2C-B67F-FD41C2A92732}' />
     </window>
-    <window class='worksheet' maximized='true' name='TIMELY RESPONSE'>
+    <window class='worksheet' name='TIMELY RESPONSE'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -598,33 +816,237 @@
       </viewpoint>
       <simple-id uuid='{5BBD55DA-FB41-4BA9-A52E-9B1A45948B57}' />
     </window>
+    <window class='worksheet' name='IN PROGRESS'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.1k47omy0bfnlag1732g8b11gzneh].[none:Company response to consumer:nk]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{6E592AAF-5D7B-46F3-9883-3298DE88C818}' />
+    </window>
+    <window class='worksheet' name='RESOLVED AT NO COST'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+            <card type='measures' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='0' param='[federated.1k47omy0bfnlag1732g8b11gzneh].[:Measure Names]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.1k47omy0bfnlag1732g8b11gzneh].[:Measure Names]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{1768B948-9650-439B-BDA9-362990AC38A6}' />
+    </window>
+    <window class='worksheet' maximized='true' name='Comp. By Product'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+        <highlight>
+          <color-one-way>
+            <field>[federated.1k47omy0bfnlag1732g8b11gzneh].[none:Product:nk]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{F1DBFBEC-5E0D-4791-84BF-BC6520D7F57D}' />
+    </window>
   </windows>
   <thumbnails>
-    <thumbnail height='79' name='TIMELY RESPONSE' width='192'>
-      iVBORw0KGgoAAAANSUhEUgAAAMAAAABPCAYAAAC9OsoKAAAACXBIWXMAAA7DAAAOwwHHb6hk
-      AAAEkklEQVR4nO3cX2hTZxgG8Mcea5uOOBvT2FXcpq5unTKVzYFScKB0FAYt24UiyDYY6thu
-      hLHBYHUWCrvbzYr7U1E2GB2bo71pcfRGWvanHXQTtLSdrZaNpjFNbc9M0qbHz4sKJprQc9Iv
-      OcH3+V0eTl7e95w8/b6kp12llFIgEqrI7QaI3MQAkGgMAInGAJBoDACJxgCQaAwAibZsAKLR
-      aD76KEimabrdgqskzM8VgERjAEi01XZO2vHjcK77IHIFVwASjQEg0RgAEo0BINEYABKNASDR
-      GAASjQEg0RgAEo0BINEYABKNASDRGAASbdVy/xgrGo2irKwsX/0UFNM04fV63W7DNRLm5wpA
-      otlaAYgeVbb+IEbqFkjy9g+QMT+3QCQaA0CiMQAkGgNAoi37LRDRo4wrAInGAJBoDACJxgCQ
-      aAwAiWbrUYglt/FP5xl8cXEUMcOPF954DydeqYKR7lQrjN/Of47v+8OwPJuw/9hJHHr+Med1
-      tNM1w184e/wM+pNO39h4Gk31lbkfYUUczJ+Ywdgfl9Dd24f/d32Aj1Jmc/MeZit9z1A2xQbb
-      1CetvWpqQanF2WF1oaVJddxIf+5kV4tquTCsZheVWpjqVa0ftqrfY87r6KZrBhW6qD47dzk/
-      TWvkZP7Bbz9V3/RcVZGJLtXWNZl1nUKRqWebW6A4BvvC2H+4FoFiwFi7DQ2N1fj7z/E0547j
-      14En0diwDWsNoDhQi8N1JgYG4w7r6KZrBgDTYRgbKvLQs07Orv2uo6fwzoEalBevrE5hyNyz
-      zQDcwi1UY4vv/hHj2RpUhiOwHjp3FjO+rdiStB76arZj9XTEYR3ddM0AxGciKH+i0Lc7D9J1
-      7d28h9nK3LPNzwALmC/ywJN8yDBgBCdxE0DKW2F+HvMeD0qTjxUZCE2FAPjs19FO1wxVMM05
-      9J8/vvQZYI0XT+98HW++vQ9VBb0JdjB/XurkU+aebQZgDUruxBBLPmRZsCoDeGgjUFKCklgM
-      ceD+G+iOhcCGAIAi+3W00zUDUFH3Mb6qu1ciPo2RnnP48qcKNB+qzuUAK+Rg/rzUyafMPdvc
-      Aq3DOoxiLJL0+uEhBP2+NJ/8H0d55BrGktbDyNAVLK73Oayjm64ZUhml61Hz2kE8dW0cN3PR
-      tja6rr2b9zBbmXu2GYBS7K7141J7H0IJwJobQWfHKHa+tDnNuZuxb88EOjpHMGcBiVAf2n/x
-      Ys/uUod1dNM1QxA9bd9h4N/bSABAYgZDP3dhYvtzBfwTENB37d28h9nK3LODp0FTv0d9+chJ
-      vLXXv5T6YDeavwaONdUv7QFTvkOvxqvvv4uGZ9L/HiClTs7pmSERGkD72R/Qf93EguHBpr1H
-      ceLIi/AX7o/Ae+zOH0R38yl0/PfAyzc24nRTPSpdvYfZSt8zH4cm0fgoBInGAJBoDACJxgCQ
-      aAwAicYAkGgMAInGAJBoDACJxgCQaAwAicYAkGgMAInGAJBoDACJxgCQaAwAicYAkGgMAInG
-      AJBoDACJxgCQaAwAicYAkGgMAInGAJBoDACJxgCQaAwAicYAkGh3ASnBKcNHU3jFAAAAAElF
-      TkSuQmCC
+    <thumbnail height='192' name='Comp. By Product' width='192'>
+      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
+      gg==
+    </thumbnail>
+    <thumbnail height='24' name='IN PROGRESS' width='64'>
+      iVBORw0KGgoAAAANSUhEUgAAAEAAAAAYCAYAAABKtPtEAAAACXBIWXMAAA7DAAAOwwHHb6hk
+      AAABsElEQVRYhe2YIcvqUByHn3dehBWjSZtREHGIIhr8BDaLiFEMfgfLgqAfQAwiFovFZBMs
+      CrOImAS1KBoERZkI27nhwuDlveXeNxzGu6ed/85+/HjGOWEfQgjBD0aRXUA2ngDZBWTjCZBd
+      QDaeANkFZOMJkF1ANp4A2QVk4wmQXUA2rhSg6zrlcpnb7fZp3m63uVwu/5TlOgHX6xVFUYjH
+      42y322/nuU7AZrMhGAySyWQwDOPbea4TsFqtiMViRCIRTqcTz+fTefZ6vdB1nXQ6TS6Xo9vt
+      8n6/ATidTlQqFZLJJPl8nvF4/Ocl4SIWi4VoNpvOejKZiE6n46xbrZY4n8+f9vd6PbFer0Wj
+      0RCWZX3J/CXjK/4v8/mc4XDIcDh0ZolEglKphKqqX/abpollWfj9fnw+318zXXME7vc7u92O
+      0WiEYRgYhsFsNiMQCHA4HACwbRvTNAHY7XYMBgM0TSMUCvF4PJhOp9i2zf1+53g8Ai4SsN/v
+      CYfDhEIhZ6aqKtls1rkMFUWhWq2iaRq1Wo1isUg0GkVVVer1Ov1+n1QqRaFQYLlcAvAhhPdX
+      +EfzG+XreVfQevHBAAAAAElFTkSuQmCC
+    </thumbnail>
+    <thumbnail height='24' name='RESOLVED AT NO COST' width='192'>
+      iVBORw0KGgoAAAANSUhEUgAAAMAAAAAYCAYAAACssfJFAAAACXBIWXMAAA7DAAAOwwHHb6hk
+      AAAAgElEQVR4nO3VsQ0CMRQFQQ5RznVORdRhyakpARLwSTsTO3gOVv9Ya60bRN13D4CdBECa
+      AEgTAGkCIE0ApAmAtI8BzDn/seOSxhi7J2xV+L8LQJoASHt88+h8vn69A7ZwAUgTAGkCIE0A
+      pAmANAGQJgDSBECaAEgTAGkCIE0ApL0BEVQOcvdw5QYAAAAASUVORK5CYII=
+    </thumbnail>
+    <thumbnail height='24' name='TIMELY RESPONSE' width='192'>
+      iVBORw0KGgoAAAANSUhEUgAAAMAAAAAYCAYAAACssfJFAAAACXBIWXMAAA7DAAAOwwHHb6hk
+      AAAAgElEQVR4nO3VsQ0CMRQFQQ5RznVORdRhyakpARLwSTsTO3gOVv9Ya60bRN13D4CdBECa
+      AEgTAGkCIE0ApAmAtI8BzDn/seOSxhi7J2xV+L8LQJoASHt88+h8vn69A7ZwAUgTAGkCIE0A
+      pAmANAGQJgDSBECaAEgTAGkCIE0ApL0BEVQOcvdw5QYAAAAASUVORK5CYII=
     </thumbnail>
     <thumbnail height='192' name='TOTAL COMPLAINTS' width='192'>
       iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAACXBIWXMAAA7DAAAOwwHHb6hk
