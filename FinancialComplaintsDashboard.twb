@@ -336,11 +336,34 @@
         </metadata-records>
       </connection>
       <aliases enabled='yes' />
+      <column caption='Total Complaints #' datatype='integer' name='[Calculation_1293096087029653504]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='{FIXED : COUNT([Complaint ID])}' />
+      </column>
+      <column caption='Timely Response %' datatype='real' name='[Calculation_1293096087032156161]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='COUNT(If ([Timely response?]=&quot;Yes&quot;) THEN [Complaint ID] END)/COUNT([Complaint ID])' />
+      </column>
+      <column caption='Non Timely Response' datatype='real' name='[Calculation_1293096087033196546]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='1-[Calculation_1293096087032156161]' />
+      </column>
       <column datatype='integer' name='[Complaint ID]' role='dimension' type='ordinal' />
       <column datatype='string' name='[State]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
       <column datatype='string' name='[ZIP code]' role='dimension' semantic-role='[ZipCode].[Name]' type='nominal' />
       <_.fcp.ObjectModelTableType.true...column caption='Financial Consumer Complaints.csv' datatype='table' name='[__tableau_internal_object_id__].[Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6]' role='measure' type='quantitative' />
+      <column-instance column='[Calculation_1293096087032156161]' derivation='User' name='[usr:Calculation_1293096087032156161:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[Calculation_1293096087033196546]' derivation='User' name='[usr:Calculation_1293096087033196546:qk]' pivot='key' type='quantitative' />
       <layout _.fcp.SchemaViewerObjectModel.false...dim-percentage='0.5' _.fcp.SchemaViewerObjectModel.false...measure-percentage='0.4' dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <style>
+        <style-rule element='mark'>
+          <encoding attr='color' field='[:Measure Names]' type='palette'>
+            <map to='#2baad8'>
+              <bucket>&quot;[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087032156161:qk]&quot;</bucket>
+            </map>
+            <map to='#e1e1e1'>
+              <bucket>&quot;[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087033196546:qk]&quot;</bucket>
+            </map>
+          </encoding>
+        </style-rule>
+      </style>
       <semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
       </semantic-values>
@@ -376,29 +399,135 @@
     </datasource>
   </datasources>
   <worksheets>
-    <worksheet name='Sheet 1'>
+    <worksheet name='TIMELY RESPONSE'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontalignment='1' fontcolor='#898989' fontname='Tableau Book' fontsize='11'>&lt;Sheet Name&gt;</run>
+            <run fontalignment='1'>Æ&#10;</run>
+            <run bold='true' fontalignment='1' fontcolor='#000000' fontname='Tableau Medium' fontsize='22'><![CDATA[<[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087032156161:qk]>]]></run>
+            <run fontalignment='1'>Æ&#10;&#10;</run>
+          </formatted-text>
+        </title>
+      </layout-options>
       <table>
         <view>
-          <datasources />
+          <datasources>
+            <datasource caption='Financial Consumer Complaints' name='federated.1k47omy0bfnlag1732g8b11gzneh' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1k47omy0bfnlag1732g8b11gzneh'>
+            <column caption='Timely Response %' datatype='real' name='[Calculation_1293096087032156161]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='COUNT(If ([Timely response?]=&quot;Yes&quot;) THEN [Complaint ID] END)/COUNT([Complaint ID])' />
+            </column>
+            <column caption='Non Timely Response' datatype='real' name='[Calculation_1293096087033196546]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='1-[Calculation_1293096087032156161]' />
+            </column>
+            <column datatype='integer' name='[Complaint ID]' role='dimension' type='ordinal' />
+            <column datatype='string' name='[Timely response?]' role='dimension' type='nominal' />
+            <column-instance column='[Calculation_1293096087032156161]' derivation='User' name='[usr:Calculation_1293096087032156161:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_1293096087033196546]' derivation='User' name='[usr:Calculation_1293096087033196546:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.1k47omy0bfnlag1732g8b11gzneh].[:Measure Names]'>
+            <groupfilter function='union' user:op='manual'>
+              <groupfilter function='member' level='[:Measure Names]' member='&quot;[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087033196546:qk]&quot;' />
+              <groupfilter function='member' level='[:Measure Names]' member='&quot;[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087032156161:qk]&quot;' />
+            </groupfilter>
+          </filter>
+          <slices>
+            <column>[federated.1k47omy0bfnlag1732g8b11gzneh].[:Measure Names]</column>
+          </slices>
           <aggregation value='true' />
         </view>
-        <style />
+        <style>
+          <style-rule element='cell'>
+            <format attr='text-format' field='[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087032156161:qk]' value='p0.0%' />
+          </style-rule>
+          <style-rule element='label'>
+            <format attr='text-format' field='[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087032156161:qk]' value='p0.0%' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <encodings>
+              <color column='[federated.1k47omy0bfnlag1732g8b11gzneh].[:Measure Names]' />
+              <lod column='[federated.1k47omy0bfnlag1732g8b11gzneh].[usr:Calculation_1293096087032156161:qk]' />
+              <lod column='[federated.1k47omy0bfnlag1732g8b11gzneh].[:Measure Names]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='false' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows />
+        <cols>[federated.1k47omy0bfnlag1732g8b11gzneh].[Multiple Values]</cols>
+      </table>
+      <simple-id uuid='{D147F8B0-394A-44E0-85B2-0F44BAE23765}' />
+    </worksheet>
+    <worksheet name='TOTAL COMPLAINTS'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontalignment='1' fontcolor='#898989' fontname='Tableau Book' fontsize='11'>&lt;Sheet Name&gt;</run>
+            <run fontalignment='1'>Æ&#10;</run>
+            <run fontalignment='1' fontcolor='#000000' fontname='Tableau Medium' fontsize='26'><![CDATA[<[federated.1k47omy0bfnlag1732g8b11gzneh].[sum:Calculation_1293096087029653504:qk]>]]></run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Financial Consumer Complaints' name='federated.1k47omy0bfnlag1732g8b11gzneh' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1k47omy0bfnlag1732g8b11gzneh'>
+            <column caption='Total Complaints #' datatype='integer' name='[Calculation_1293096087029653504]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='{FIXED : COUNT([Complaint ID])}' />
+            </column>
+            <column datatype='integer' name='[Complaint ID]' role='dimension' type='ordinal' />
+            <_.fcp.ObjectModelTableType.false...column caption='Financial Consumer Complaints.csv' datatype='integer' name='[__tableau_internal_object_id__].[Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6]' role='measure' type='quantitative' />
+            <column datatype='date' name='[Date Sumbited]' role='dimension' type='ordinal' />
+            <_.fcp.ObjectModelTableType.true...column caption='Financial Consumer Complaints.csv' datatype='table' name='[__tableau_internal_object_id__].[Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6]' role='measure' type='quantitative' />
+            <column-instance column='[__tableau_internal_object_id__].[Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6]' derivation='Count' name='[__tableau_internal_object_id__].[cnt:Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_1293096087029653504]' derivation='Sum' name='[sum:Calculation_1293096087029653504:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Date Sumbited]' derivation='Month-Trunc' name='[tmn:Date Sumbited:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <format attr='display' class='0' field='[federated.1k47omy0bfnlag1732g8b11gzneh].[__tableau_internal_object_id__].[cnt:Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6:qk]' scope='rows' value='false' />
+            <format attr='display' class='0' field='[federated.1k47omy0bfnlag1732g8b11gzneh].[tmn:Date Sumbited:qk]' scope='cols' value='false' />
+          </style-rule>
+          <style-rule element='gridline'>
+            <format attr='stroke-size' scope='rows' value='0' />
+            <format attr='line-visibility' scope='rows' value='off' />
+          </style-rule>
+        </style>
         <panes>
           <pane selection-relaxation-option='selection-relaxation-allow'>
             <view>
               <breakdown value='auto' />
             </view>
             <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.1k47omy0bfnlag1732g8b11gzneh].[__tableau_internal_object_id__].[cnt:Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6:qk]' />
+              <lod column='[federated.1k47omy0bfnlag1732g8b11gzneh].[sum:Calculation_1293096087029653504:qk]' />
+            </encodings>
           </pane>
         </panes>
-        <rows />
-        <cols />
+        <rows>[federated.1k47omy0bfnlag1732g8b11gzneh].[__tableau_internal_object_id__].[cnt:Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6:qk]</rows>
+        <cols>[federated.1k47omy0bfnlag1732g8b11gzneh].[tmn:Date Sumbited:qk]</cols>
       </table>
       <simple-id uuid='{410A7613-FCC0-41E4-8623-E5EDD108E05A}' />
     </worksheet>
   </worksheets>
   <windows source-height='30'>
-    <window class='worksheet' maximized='true' name='Sheet 1'>
+    <window class='worksheet' name='TOTAL COMPLAINTS'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -418,24 +547,192 @@
             <card type='title' />
           </strip>
         </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='0' param='[federated.1k47omy0bfnlag1732g8b11gzneh].[__tableau_internal_object_id__].[cnt:Financial Consumer Complaints.csv_F3DBA5D953DD4981A59912A8491246F6:qk]' type='color' />
+          </strip>
+        </edge>
       </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.1k47omy0bfnlag1732g8b11gzneh].[yr:Date Sumbited:ok]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
       <simple-id uuid='{36D7B545-CE79-4C2C-B67F-FD41C2A92732}' />
+    </window>
+    <window class='worksheet' maximized='true' name='TIMELY RESPONSE'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+            <card type='measures' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='0' param='[federated.1k47omy0bfnlag1732g8b11gzneh].[:Measure Names]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.1k47omy0bfnlag1732g8b11gzneh].[:Measure Names]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{5BBD55DA-FB41-4BA9-A52E-9B1A45948B57}' />
     </window>
   </windows>
   <thumbnails>
-    <thumbnail height='192' name='Sheet 1' width='192'>
+    <thumbnail height='79' name='TIMELY RESPONSE' width='192'>
+      iVBORw0KGgoAAAANSUhEUgAAAMAAAABPCAYAAAC9OsoKAAAACXBIWXMAAA7DAAAOwwHHb6hk
+      AAAEkklEQVR4nO3cX2hTZxgG8Mcea5uOOBvT2FXcpq5unTKVzYFScKB0FAYt24UiyDYY6thu
+      hLHBYHUWCrvbzYr7U1E2GB2bo71pcfRGWvanHXQTtLSdrZaNpjFNbc9M0qbHz4sKJprQc9Iv
+      OcH3+V0eTl7e95w8/b6kp12llFIgEqrI7QaI3MQAkGgMAInGAJBoDACJxgCQaAwAibZsAKLR
+      aD76KEimabrdgqskzM8VgERjAEi01XZO2vHjcK77IHIFVwASjQEg0RgAEo0BINEYABKNASDR
+      GAASjQEg0RgAEo0BINEYABKNASDRGAASbdVy/xgrGo2irKwsX/0UFNM04fV63W7DNRLm5wpA
+      otlaAYgeVbb+IEbqFkjy9g+QMT+3QCQaA0CiMQAkGgNAoi37LRDRo4wrAInGAJBoDACJxgCQ
+      aAwAiWbrUYglt/FP5xl8cXEUMcOPF954DydeqYKR7lQrjN/Of47v+8OwPJuw/9hJHHr+Med1
+      tNM1w184e/wM+pNO39h4Gk31lbkfYUUczJ+Ywdgfl9Dd24f/d32Aj1Jmc/MeZit9z1A2xQbb
+      1CetvWpqQanF2WF1oaVJddxIf+5kV4tquTCsZheVWpjqVa0ftqrfY87r6KZrBhW6qD47dzk/
+      TWvkZP7Bbz9V3/RcVZGJLtXWNZl1nUKRqWebW6A4BvvC2H+4FoFiwFi7DQ2N1fj7z/E0547j
+      14En0diwDWsNoDhQi8N1JgYG4w7r6KZrBgDTYRgbKvLQs07Orv2uo6fwzoEalBevrE5hyNyz
+      zQDcwi1UY4vv/hHj2RpUhiOwHjp3FjO+rdiStB76arZj9XTEYR3ddM0AxGciKH+i0Lc7D9J1
+      7d28h9nK3LPNzwALmC/ywJN8yDBgBCdxE0DKW2F+HvMeD0qTjxUZCE2FAPjs19FO1wxVMM05
+      9J8/vvQZYI0XT+98HW++vQ9VBb0JdjB/XurkU+aebQZgDUruxBBLPmRZsCoDeGgjUFKCklgM
+      ceD+G+iOhcCGAIAi+3W00zUDUFH3Mb6qu1ciPo2RnnP48qcKNB+qzuUAK+Rg/rzUyafMPdvc
+      Aq3DOoxiLJL0+uEhBP2+NJ/8H0d55BrGktbDyNAVLK73Oayjm64ZUhml61Hz2kE8dW0cN3PR
+      tja6rr2b9zBbmXu2GYBS7K7141J7H0IJwJobQWfHKHa+tDnNuZuxb88EOjpHMGcBiVAf2n/x
+      Ys/uUod1dNM1QxA9bd9h4N/bSABAYgZDP3dhYvtzBfwTENB37d28h9nK3LODp0FTv0d9+chJ
+      vLXXv5T6YDeavwaONdUv7QFTvkOvxqvvv4uGZ9L/HiClTs7pmSERGkD72R/Qf93EguHBpr1H
+      ceLIi/AX7o/Ae+zOH0R38yl0/PfAyzc24nRTPSpdvYfZSt8zH4cm0fgoBInGAJBoDACJxgCQ
+      aAwAicYAkGgMAInGAJBoDACJxgCQaAwAicYAkGgMAInGAJBoDACJxgCQaAwAicYAkGgMAInG
+      AJBoDACJxgCQaAwAicYAkGgMAInGAJBoDACJxgCQaAwAicYAkGh3ASnBKcNHU3jFAAAAAElF
+      TkSuQmCC
+    </thumbnail>
+    <thumbnail height='192' name='TOTAL COMPLAINTS' width='192'>
       iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAACXBIWXMAAA7DAAAOwwHHb6hk
-      AAACFUlEQVR4nO3TMQEAIAzAMMC/5yFjRxMFfXpnZg5Eve0A2GQA0gxAmgFIMwBpBiDNAKQZ
-      gDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFI
-      MwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQD
-      kGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBp
-      BiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA
-      0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDN
-      AKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxA
-      mgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZ
-      gDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFI
-      MwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKR9Y+0F
-      fBUOM1sAAAAASUVORK5CYII=
+      AAAV5ElEQVR4nO3da28j13kH8P8MhzMc3i8iKeq2kvYqrdeXeNex3cRxLnWbBAUaIEYbpH0T
+      oG/7IfolWgQI0DdBC6RBgiZFmzhunGTtpE7s3fV615b2qhspiRTFOznDmTl9QYkrihdJK97M
+      8/zembvUjsX5z3nOc84MBcYYAyGcEgd9AIQMUj0ApmkO8jgIGQgaAQjXKACEaxQAwjUKAOEa
+      BYBwjQJAuEYBIFyjABCuUQAI1ygAhGsUAMI1CgDhGgWAcI0CQLhGASBcowAQrlEACNcoAIRr
+      FADCNQoA4RoFgHCNAkC4RgEgXKMAEK5RAAjXKACEaxQAwjUKAOEaBYBwjQJAuEYBIFyjABCu
+      UQAI1ygAhGsUAMI1CgDhGgWAcI0CQLhGASBcowAQrlEACNcoAIRrFADCNQoA4RoFgHCNAkC4
+      RgEgXKMAEK5RAAjXKACEaxQAwjUKAOEaBYBwjQJAuEYBIFyjABCuUQAI1ygAhGsUAMI1CgDh
+      GgWAcI0CQLhGASBcowAQrlEACNcoAIRrFADCNQoA4drQBeDtW6uoGuagD4NwYqgCUKxU8W+/
+      WUKupA/6UAgnhioAj7ayKGkGshQA0idDFYDljQzmoj7s5CuDPhTCiaEKwL1EBq8uxJCmACBb
+      1MAYG/RhjLyhCYBumKjoJmajXqQLfAegWKnin/79fRQq1UEfysgbmgA8SGQxP+5F2KdyPwLc
+      eJhErqRjt6AN+lBG3tAEYGljF5emgnAqdpR1ftuglsXw+08TeHUhhlSuPOjDGXlDEQDGGO4l
+      srgw4Ycq21DSDFic1r8ryTycDjsWpoPYzlIAem0oAqAbFrSqCa9Thk0UoSoSypox6MMaiOt3
+      43jt8iTCPhVJCkDPDUUAVlN5zEa8EAQBAOBRZS4ngCWtirWdAhamAhjzqkhSCdQTb91ag2la
+      AIYkAEsbGVyaCtT/O+BWuFwM+9P9JF6YD0OyiVBlGypVfudCvZIr6fjRu/eRzNUaLQMPAGMM
+      DzdzODvuq78WcCncdYIsxvD7pU28fGEcAGC3iWAMMC1rwEc2WtZ3CvCodizFdwEMQQAMi6Go
+      GQi4lfprIa+KNGctwPuJLMJeFX6XDAAQBAFBj4NaoV12fzOL15+ZxP1EFsAQBKBqWHDYbQ2v
+      BdwKdov8fPCMMfz69gbeeGG6Pg8CgIhPRTLL10jYS4wxrCQLeOl8FKl8BYZpDT4AlaoBhyw1
+      vBbkLAAb6SI0w8JUyN3wetirIpmniXC3MFZbZR/zqgi6HUjmyoMPQL5chdcpN7zmsNugcTQB
+      /M2dBL727GTT6xGfilSORoBuyRQ1+F0KRAE4F/PhfiI3+ADUDqoxAHbJBsNkXGwG2y1qSObK
+      DV2wfSGPAynOmgG9tJzIYi5aa7efG/fh3mYW0tFv661MUYffpTS8ZhMFqLKEkm7ApdgHdGS9
+      886dOB5s5iDZBOwWNLxyIQrxQO2/L+hxIFvSwRhrmBsAtXr2N3cSePlitGkORVpbSxXw/NwY
+      ACDqV5HKlQcfgFxZx3zU2/S6zyUjU9RHLgCmxfDBgyT+/ksXUDUtgAGxgLPl3xUFQIAAw2Kw
+      2xoDUNIN/OefVmCzCfjiQqwfh/6ZZjGG1VQBf3VtFgAgSzYE3I7Bl0DZUvMcAKitBYziYlhJ
+      M6DYbYj4VEwGXZgMuSCKzVf/fQ659XwolatgccqPPyxvwTBpreAoFd0EBKFhtDw37ht8AMq6
+      AXeLq7zfpSBTHL0ArKcLTd2edgRBwJhXxU6+uSO2kqptmbg0GcCHj1LdPsyRs5kpYSrkanjt
+      wsQQBKCkGVCV5kos5BnNVuj6ThFnwscLAABEvI6W26LXU0XMhN14/XIM1z/dhGWNfsPgNNZ2
+      ijgz1vh7j3jVwQbAMC2YDC0ncQHXaAYgni5hIug6+i/uCXoc2GmxGrxT1DDmccCjyjgT9uDO
+      +m43D3PkPNrOY+ZQAOySONgAVKomlDYdDL9LQbZUHalWqGFaSOY1hD2OY79nzONA6lAJtL9J
+      bv/C8bUrk3jnboLbeyiOYjGGTFFH2Kc2/dlgA6CbcDtad3lkSax1SUZIrlyFzyl3nPQe5nPK
+      2D00F0rslhDzO+utUa9qR9Ct4OFWrqvHOyrKeu1Ca7c1n+4DDUBBq7YNgE0UIAgYqRDEd0uI
+      BZqvQp24HRI0w2zo9Kyni5g+MKETBAGvXRrHe8vbIzVidku7eSYw4ACkCxpCHqXlnwmCgAsx
+      P5bi2T4fVe/c38xhYdJ/ovcIgoBLE3588GgHQG0B7P5mHmfHG9dOpkIuCIKAtZ1i1453VKTy
+      FUS8rcvOvgYgc+hZN/slQTsLkz7c2xydYX07V0G0RR16lC9ciuKPD1L1UaCgVeE/9HsTBAGv
+      Xojg+tJWV451lGSKOgKu1hfavgXAYgzf/99lFA/c65stVeFV2wdgOuTC2k4R5gi0+HTDhG5a
+      cLYZijvxqnbMht24tZpGrlyFLNkgtahn58IeZMvVkVxAPI10i/1m+/oWgKphoVAxsJ4u1V8r
+      aFV41fZbHWyiCK9THol2aDJXwZjH0XLPz3G8thDF7+8lsbpTxEyodRtVFAW8OBfC+w9oYeyg
+      bKmKoHvAI0DVtMAYsHqgRi3rJhxy541c58a9eLid7/Xh9dzGbqlh4npSXlXGfMSDt27HO/6c
+      52aCWEpksVOgRyvuK+lG25G3rwGIBVSsHwhA1WRQpM4BOB/14uF2oSfH1M97DlZTRUy22fR2
+      XF+4GEWuXG27eQ4AFLsN33h+Cj/94wp++N4j3N/KHTsIhmlhKZ5FSR+dR9IwxqBVLaht1pv6
+      FgDdsBB0K9AMC1XTgmlZYGje5XhYxFtbCKoa3W2HVk0L//L2Esp9+LD3F8AmTtgCPcyr2vGP
+      f7GAUJvhfN98xIPvvX4eX14cxy9vJ7B1xG2VpsVwa3UX3//1PXzwOI0f/d/KyCyqaYYFuyS2
+      nDMBfQxAaW/RK+pTsZ4uoaSZUGWpaZ/7YaIoIOJ1YLvLd0aVdROJTAXLm70vr+6sZzAbdkM+
+      YrQ7jna17GGCIGAy4MTrC1F8tNZ5m8SP31/BaqqAv/uzOXznlVlMBpx463ZiJEqoYsWAq0Pj
+      oW8BqFRNqLINs2E3VlKFvZtdjtcROTfuwYMuzwO2cxWcH/diKdHbNqvFGP7wIIVXzod7+u+0
+      czbiwf2tfNst0yXNQKqg4ZvPT8GryhAEAV+9PI6dgoaP1z/7azD5SudWe98CUNYNqHYJs2EX
+      VndKyFeMjh2gg+bDHqx0eYFnO1fBlRl//ekAJ3Xc1uxqqoigS4HvmP+v3abYbRj3q1hJtf79
+      3Y1ncWnC17A9QxAEfOvqNK4vb3e99Oy33ZLetGZyUB8DYMLlkOBTZZR0E7ly5zWAg3zO2hOj
+      uzlpTeY1jPtUTAVdbU+OVgzTwh/up/DPby/jfz6KdzwmxhjevZfEK+fDR5Z6vXR1LoTb65mm
+      1xljuLORxZWp5tVpVZbgVCRUPuNfWFhbBBuCAFSqtef/2EQBQZeMB9t5eI55VRQEASG30rQr
+      8jQyRR1Bl4zFSR+WjjkPWNsp4ge/fYCSbuB7r51F0K3gB799gIfbhZb18k5Bh2ExTAVP1/05
+      rQm/iq1spelRiyXdhGkyjLXZjuJWpIaFy0F7mjlJtty8an5Q/0aAvTkAAMyF3VjazMPbZiNc
+      KxMBJxItnpZ8Y2X3xCvFhmlBMyy4FAlzYRfWd0tH/gzGGH52cwPfvjaDryyOw6lIeGk+hO++
+      Movry0ncXMk0/f3r95J4aT50omPrBckmYj7ixr1DQV9K5HBxwtt2dPK7ZGRLw/OQ4uv3kieu
+      ArLlKrzO9udZ3wKgHQjAdMgJzbCOPQcAalexeKYxAFXTwq/ubh7Z5jusqNUWRgRBgE0U4XPa
+      j+wy7ZZ0BF1KUwvS55Txty+fwa21TH1CbVoM/3UrAUkUcCnWfMP/ILxwJoiP1zP1qyhjDJ8m
+      8lic8LV9T8ApI1sejgBohol376WQOuGjIk2TQZHan+Z9XQfYX/SKeB3wqvZ6II4j7FWQPFQC
+      7RZ1VKoW1ndLbd7VWqqgI3xg2F+M+bC81bkM2spWEPO37uPLkog3X5rGb5eSeJws4icfrMPj
+      kPCN5yYGWvsfFHTLMCyG5c08GKs9j9UwrY71sVe1IzckAciWqtANC9u54wfAYgwmQ9s1AKCP
+      ATAZg7TXaRAFAd/74nzHZB6m2m2wLDR0JdbTJSxOeLGxe7LHB6YKWsP22PmIGyupYscacy1d
+      6riQ5VIkfPvaNH7xcQJnxpx47WL4qff99IIoCPjrF6dway2Dn92M4/Z6FufGPR3f43Pajz0C
+      FDUDP3zvMX5+M46VHmxgjGfKOBvxIHmCEaCs16qOTp9D/wJgsYYkhtzKia6OgiAg7FUahsCN
+      TAXX5kJIF/UTTZC2c40BcCkSZMnWdnhljCGRrWCyzQiwL+CS8Q9fOotrc6GhufIf5HHY8ea1
+      acyH3bi1lsXiROfyTJWlY31HgWkx/PxmHM/NBLAw4cWNlQz+9foj3F7LNHwujD390/4SmQqe
+      m/GfqBGSK1ePbD/37cFYpoX6CPC0Yj4ViUytFGGMYaegYdzngN0m1kqsNvs9HqeKiHod9ZKr
+      1hlo/MVcmfLho7UsvrrYfOOExWol3HGewHaS2x0HQRAEPDPlwzNT7Wv/fQ67iEr16HWA3y0n
+      EfE66j/zbMSNkm7gnU+TuLmWxVcWIihXTdyNZ7GeLuM7n5/pWHq1ki7qePX8GN5/mD72e466
+      3wTo0whgmBZEUTj1yRHzO5DYm/AWNAOSTYQsiYj6HIi3mQhbjOEXH2/inU+3AdSuVrphNc0/
+      zkc9WNkptbwFM12szRmG/eTuNkkUYbeJHTsvS5t5JPMaXrs41vC6U5bw9SvjeONyFO/d38Gj
+      ZBHPTwfw6rkx3FprXpPopKyb0EwLXocEu0089reIZo4xAvQlALppnajebyfqc2ArVwFjDNs5
+      DRN7JUmrDtG+kmZCtduQrRhYS5eQr1ThdkhNdaEsiZgOOvG4xaJYIltuOwEedapiQ7lNAEyL
+      4XfLSXzj2RhsYvPnKwgCoj4H3rw2hT+/HMVMyImFmAePUp3nCOu7jReidFFHxOOolcEepalU
+      bVdWZUvNI/1h/QlAh/LkJGSbCEEQYFoMa+kyYv5auRLzObDZZgRIFTREfQ68cTmKX93dRjJf
+      a2e28uy0DzfXmve/JDKVeth443HYUdRaB+BxqogzIdex93QBta0ZE34Vj5KtV981w8KPP9jA
+      jdUno0QiW8bE3mcdcstIFZ7c8cYYw3/f3kS6xVMEcxVjOEqgWgv09P+UIAgIuGq/gFRBq09K
+      xzwKchWj5VVlM1vBVEBF0CXjUsyDt+5uN7RAD4p4atu1D7b+GGPYymmItrmpetR5HBJyLb6x
+      kzGGW2tZXDnGXOKwF2b8uHFogrxveTOPZyZ8+CSeh77X8Utkn4z2UZ+jYQQo6iYe75Tw8Ua2
+      acJd0k24lM4X3r4EoFK1oMrdmW9P+B1Y2y2joJlwO578TLcitawNN3MVjPtqJ+/n54JwKxJi
+      vtYnsyAIuDLpw534kzUBbe9DkLsQ4M8iv9q6FVrUTZSqJqLe423PPijsUaBVLRQOjSyMMdxY
+      zeLqXADzERfuxGsLi9lyFcG9SXPYrWCn8KTrt54u47lpH3YKOjazT4Jhsdo3wtiO2m5/4qN/
+      CpphQbF3558a9zrwSTyPkFtuqOOj3uaJsMUY8hWzvuIsigK++/I0wp72w+KlmBufJPL1PTA7
+      RR3RNoHhgVe1o1BpvrB8Es9jIeZ5qnZvrRPlxccbjeVmPFNB0GWH1yHhxTN+3FrL1j+H/Run
+      FEmEvnd7LQDc2y7gXMSN1y6E8fan26iatRH8Jx/GcSnmwVGH15cAlKtm21vSTirqVbCZa67J
+      D3aI9tVuuml8IljtgVvtfyuyTcSXLo7hPz6MYyunYSun1UcQHnlVOwqHNsRZFsPyVgELsc4L
+      aZ0sxry4t1WsT3YZY/jTSgbPz/ghCAKccm2f1jvLKUR9jvpnJgiAItnqdxbulqoYcysIuWWc
+      Dbvw84828dMbCVyd9ePz88Gjb7h66v+DE9BatB2flmK3IeiSEfM1Dr0Rj4Jk/tAjBHMVjLlP
+      1m8WBAFnwy5885kofnl3G7fWshh/imF+VCiSiMqhewKSBQ1uhwTnKcpaWRLxzKQXP/4wjlRB
+      R0EzUNZNTPqfXGyunvFjeavQULIKgoCgW8ZOUd9b0FRg22tPX5sNYC7kxLdfnMDs2PEeQNCX
+      hTCtap74ROzkWy9MIOBqbG/5VHv9qrB/xd/Oa0+9FXnMo+DNFydwYy2LUBeP/bPGbhNhHGou
+      3FrP4dmp02/y+9wZP8Z9Cn5xZwsCBDw71bgz1aVIeGMxgrmxxs8w4lGQLOgoagbmD5zokk3E
+      8zMne/Je/+YAXZxEHq7/90U8MlbTT9YDtnMaIqc4eR12G16ZD0Jq0ePmhU0UINvEejOgalpI
+      FXRMn/IG/30TfhV/c3USL8z4cGm8+XsTLk94m0aasFtGqqBhfbeC6eDpjqM/XaAulkCdvDQX
+      wPuPMzBMq9YGq1on6lGT1pyKrT4Z3dit7YnqtMPypCSbiIWY59g/M+CUsbJThiyJcJzywtrH
+      dYDeB8Cn2jETVHE3UUCuYsDjkOr1IXl6HkWqtyyXtwu4GH36B3x1gyrbYDFgbsx56k2HfQmA
+      yU6/Ee64rp7x43Y8j5V0GZE2C17kZDyOWieo1nUx2i4k9tP5iAuzodPfatqXADDgyH5styiS
+      iOemvHj3YZrr7k03eVUJBc3ARqaCSb9jKEbVL18cQ+CIfT7H0Z8AMPT15pDFmBuzQedTrVKS
+      ZrXtECaWt4u4MODyp9t6PkPcX7Lu50VDFAT85eJgH0UySjyKhEy5CsaA0An38Q+7no8AVZPB
+      Lol9Pxnp5O8eWRKRLlWHpvzppp4HoGJYp25VkcESBcAp23A+MlrlD9CHEui4txKS4SUKAr6+
+      GEawC5POYdPzAHRzJygZnFGr/ff1/Mys3Q5JIwAZTj0PgGYwmgOQodWHAFhwUAlEhlSfSiAK
+      ABlOfVkH4PV+WjL8+rAO0PnpvIQMUk/PTIux2r0AFAAypHp2ZjLGcDNeQMRtP/KrUAkZlK4F
+      4MFOGekD3ybyOF1Btmzgc1NP9+gMQvqhayvBAVXCh+t5OGUbpv0KllNlvH7WP1TPyCfkMIHt
+      7Vc2TRM22+lWbC3GsJHVcT9Vxucm3fCpdD8uGW5dDQAhnzXUniFcowAQrlEACNcoAIRrFADC
+      NQoA4RoFgHCNAkC4RgEgXKMAEK5RAAjXKACEaxQAwjUKAOEaBYBwjQJAuEYBIFyjABCuUQAI
+      1ygAhGsUAMI1CgDhGgWAcI0CQLhGASBcowAQrlEACNcoAIRrFADCNQoA4RoFgHCNAkC4RgEg
+      XKMAEK5RAAjXKACEaxQAwjUKAOEaBYBwjQJAuEYBIFyjABCuUQAI1ygAhGv/D8IXhaOLnLY7
+      AAAAAElFTkSuQmCC
     </thumbnail>
   </thumbnails>
 </workbook>
